@@ -8,6 +8,7 @@ import argparse
 __BANNER = sys.argv[0].split('/')[-1].split('.')[0] + ''' \
 [options]
     -h, --help              this
+    -p, --pretty            print CPFs with field separators
     -v, --verify   [CPF]    verify the validity of [CPF]
     -s, --state    [state]  set the CPF state for validation or generation
     -g, --generate [n]      generate [n] random and valid CPF numbers\
@@ -25,6 +26,9 @@ __STATE_DIGIT = {
 def sanitize(cpf: str) -> str:
     return cpf.replace('.', '').replace('-', '')
 
+# Add separators to CPF string
+def prettify(cpf: str) -> str:
+    return f'{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}'
 
 # Generate CPF verifying digits for a numeric string
 def verifying_digits(s: str) -> tuple:
@@ -76,8 +80,9 @@ if __name__ == '__main__':
     )
 
     parser.add_argument('-h', '--help', action='store_true')
-    parser.add_argument('-s', '--state', type = str, default=None)
+    parser.add_argument('-p', '--pretty', action='store_true')
     parser.add_argument('-v', '--verify', type = str, default=None)
+    parser.add_argument('-s', '--state', type = str, default=None)
     parser.add_argument('-g', '--generate', type = int, default=None)
 
     args = parser.parse_args()
@@ -95,5 +100,5 @@ if __name__ == '__main__':
 
     if args.generate:
         for cpf in generate(args.generate, state=args.state):
-            print(cpf)
+            print(cpf if not args.pretty else prettify(cpf))
 
