@@ -64,10 +64,10 @@ def generate(n: int, state=None):
     sd = __STATE_DIGIT[state]
 
     for _ in range(n):
-        base = f'{random.randrange(10)}{str(random.randrange(1000000, 9999999))}'
+        base = f'{random.randrange(10)}{str(random.randrange(1000000, 9999999))}{sd}'
         vd = verifying_digits(base)
 
-        yield f'{base}{sd}{vd[0]}{vd[1]}'
+        yield f'{base}{vd[0]}{vd[1]}'
 
 
 if __name__ == '__main__':
